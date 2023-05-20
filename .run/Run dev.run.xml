@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run dev" type="CompoundRunConfigurationType">
+    <toRun name="Compose up" type="docker-deploy" />
+    <toRun name="npm dev" type="js.build_tools.npm" />
+    <method v="2" />
+  </configuration>
+</component>
