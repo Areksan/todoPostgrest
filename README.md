@@ -10,7 +10,9 @@ Installation env DEV :
 
 Execution env DEV :
 - utilisation du fichier run dev dans le dossier .run
+
 ou
+
 - npm run dev
 - cd ./docker
 - docker-compose up
