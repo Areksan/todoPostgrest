@@ -3,7 +3,7 @@ services:
   postgrest_server:
     image: postgrest/postgrest
     ports:
-      - 3000:3000
+      - "3000:3000"
     environment:
       - PGRST_DB_URI=postgres://postgres:mysecretpassword@postgresql_database:5432/postgres
       - PGRST_DB_SCHEMAS=api
@@ -18,7 +18,7 @@ services:
       context: .
       dockerfile: .dockerfile
     ports:
-      - 5433:5432
+      - "5433:5432"
     environment:
       - POSTGRES_PASSWORD=mysecretpassword
     networks:

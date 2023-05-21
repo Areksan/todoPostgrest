@@ -1,13 +1,15 @@
 import './App.css'
 import {useCreateTodosMutation, useDeleteTodosMutation, useEditTodosMutation, useGetTodosQuery} from "./apiSlice.tsx";
+import TodoI from "./interfaces/todoI.tsx";
 
 function App() {
-    const [createTodo, {isLoading}] = useCreateTodosMutation()
+    const [createTodo] = useCreateTodosMutation()
+
     async function createTodoAction() {
-        let todo = {
+        const todo: TodoI = {
             done: false,
-            task: "create",
-            due: null
+            due: null,
+            task: "create"
         }
         try {
             await createTodo(todo)
@@ -26,22 +28,22 @@ function App() {
 
 const TodoList = () => {
     const {
-        data: todos,
+        data,
         isLoading,
         isSuccess,
         isError,
-        error
-    } = useGetTodosQuery()
+        error,
+    } = useGetTodosQuery(null)
+
+    const todos: Array<TodoI> = data
 
     let content
-
     if (isLoading) {
         content = <p>hello world</p>
     } else if (isSuccess) {
         content = todos.map(todo => (
-            <div key={todo.id + todo}><p>{todo.id} {todo.task}</p><EditButton todo={todo}/> <DeleteButton key={todo.id}
-                                                                                                          todo={todo}/>
-            </div>))
+            <Todo key={`todo_${todo.id}`} todo={todo}/>
+        ))
     } else if (isError) {
         content = <p>pas cool mon gars {error.toString()}</p>
     }
@@ -52,8 +54,22 @@ const TodoList = () => {
     )
 }
 
-const DeleteButton = (props: { todo }) => {
-    const [gogo, {isLoading}] = useDeleteTodosMutation()
+const Todo = (props: { todo: TodoI }) => {
+    const todo = props.todo
+    if (typeof todo.id === "number") {
+        return (<div><p>{todo.id} {todo.task}</p><EditButton todo={todo}/> <DeleteButton
+            key={todo.id}
+            todo={todo}/>
+        </div>)
+    } else {
+        return (<div>
+            <p>Error component have no ID</p>
+        </div>)
+    }
+}
+
+const DeleteButton = (props: { todo: TodoI }) => {
+    const [gogo] = useDeleteTodosMutation()
 
     async function useDeleteAction() {
         try {
@@ -68,9 +84,9 @@ const DeleteButton = (props: { todo }) => {
     )
 }
 
-const EditButton = (props: { todo }) => {
-    const [gogo, {isLoading}] = useEditTodosMutation()
-    let todo = {...props.todo}
+const EditButton = (props: { todo: TodoI }) => {
+    const [gogo] = useEditTodosMutation()
+    const todo = {...props.todo}
     todo.task = "hello world"
 
     async function useUpdateAction() {
