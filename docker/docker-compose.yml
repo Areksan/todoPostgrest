@@ -1,26 +1,23 @@
 version: "3.9"
 services:
   postgrest_server:
+    env_file:
+      - env/env.postgrest.development
     image: postgrest/postgrest
     ports:
       - "3000:3000"
-    environment:
-      - PGRST_DB_URI=postgres://postgres:mysecretpassword@postgresql_database:5432/postgres
-      - PGRST_DB_SCHEMAS=api
-      - PGRST_DB_ANON_ROLE=web_anon
-      - PGRST_JWT_SECRET=kM3rHzH086dOBWNkMbrtjkXDc6dJ2Aux
     networks:
       - postgrest-backend
     depends_on:
       - postgresql_database
   postgresql_database:
+    env_file:
+      - env/env.postgres.development
     build:
       context: .
       dockerfile: .dockerfile
     ports:
       - "5433:5432"
-    environment:
-      - POSTGRES_PASSWORD=mysecretpassword
     networks:
       - postgrest-backend
   swagger:
