@@ -16,3 +16,9 @@ ou
 - npm run dev
 - cd ./docker
 - docker-compose up
+
+URL :
+- Front : http://localhost:5173
+- API : http://localhost:3000
+- SWAGGER : http://localhost:8181/
+- Request documentation : https://postgrest.org/en/v11.0/references/api/tables_views.html
